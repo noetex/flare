@@ -1,0 +1,124 @@
+typedef enum
+{
+	VIDEO_API_D3D11,
+	VIDEO_API_D3D12,
+	VIDEO_API_WINGDI,
+	VIDEO_API_OPENGL,
+	VIDEO_API_VULKAN,
+} video_api;
+
+typedef enum
+{
+	AUDIO_API_WAVEOUT,
+	AUDIO_API_XAUDIO2,
+	AUDIO_API_DIRECTSOUND8,
+
+} audio_api;
+
+typedef enum
+{
+	INPUT_API_XINPUT,
+	INPUT_API_
+} input_api;
+
+typedef enum
+{
+	NETWORK_API_WINSOCK2,
+	NETWORK_API_DIRECTPLAY,
+} network_api;
+
+
+typedef enum
+{
+	SHADOW_QUALITY_LOW,
+	SHADOW_QUALITY_MEDUIM,
+	SHADOW_QUALITY_HIGH,
+	SHADOW_QUALITY_MAX,
+} shadow_quality;
+
+typedef enum
+{
+	ANTI_ALIASING_FXAA,
+	ANTI_ALIASING_TAA,
+	ANTI_ALIASING_MSAA,
+	ANTI_ALIASING_SSAA,
+	ANTI_ALIASING_FXAA,
+} anti_aliasing;
+
+typedef enum
+{
+	AMBIENT_OCCLUSION_HBAO,
+	AMBIENT_OCCLUSION_SSAO,
+} ambient_occlusion;
+
+typedef enum
+{
+	TEXTURE_FILTERING_BILINEAR,
+	TEXTURE_FILTERING_TRILINEAR,
+	TEXTURE_FILTERING_ANISOTROPIC,
+	TEXTURE_FILTERING_ANISOTROPIC_X2,
+	TEXTURE_FILTERING_ANISOTROPIC_X4,
+	TEXTURE_FILTERING_ANISOTROPIC_X8,
+	TEXTURE_FILTERING_ANISOTROPIC_X16,
+	TEXTURE_FILTERING_ANISOTROPIC_X32,
+} texture_filtering;
+
+typedef enum
+{
+	RENDER_MODE_NORMAL,
+	RENDER_MODE_INTERLACED,
+} render_mode;
+
+typedef enum
+{
+	PARTICLE_LIGHTING_QUALITY_LOW,
+	PARTICLE_LIGHTING_QUALITY_MEDIUM,
+	PARTICLE_LIGHTING_QUALITY_HIGH,
+	PARTICLE_LIGHTING_QUALITY_MAX,
+} particle_lighting_quality;
+
+typedef enum
+{
+	MESH_QUALITY_LOW,
+	MESH_QUALITY_MEDIUM,
+	MESH_QUALITY_HIGH,
+	MESH_QUALITY_MAX,
+} mesh_quality;
+
+typedef enum
+{
+	TEXTURE_QUALITY_LOW,
+	TEXTURE_QUALITY_MEDIUM,
+	TEXTURE_QUALITY_HIGH,
+	TEXTURE_QUALITY_MAX,
+} texture_quality;
+
+typedef enum
+{
+	LES_DISTORTION_
+} les_distortion;
+
+typedef enum
+{
+	VOLUMETRIC_LIGHTING_QUALITY_LOW,
+	VOLUMETRIC_LIGHTING_QUALITY_MEDIUM,
+	VOLUMETRIC_LIGHTING_QUALITY_HIGH,
+	VOLUMETRIC_LIGHTING_QUALITY_MAX,
+	VOLUMETRIC_LIGHTING_QUALITY_LOW,
+}
+
+typedef struct
+{
+	bool_t ScreenSpaceReflections;
+	bool_t ExclusiveFullscreen;
+	bool_t MotionBlur;
+	bool_t LensFlare;
+	bool_t SubsurfaceScattering;
+	bool_t HighDynamicRange;
+	bool_t FilmNoise;
+	bool_t Bloom;
+	bool_t ShadowCache;
+	bool_t ContactShadows;
+	bool_t DepthOfField;
+	bool_t GlobalIllumination;
+} flare_config;
