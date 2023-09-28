@@ -1,33 +1,3 @@
-static void
-enable_dpi_awareness(void)
-{
-	HMODULE Winuser = LoadLibraryA("user32.dll");
-	void* Function = GetProcAddress(Winuser, "SetProcessDpiAwarenessContext");
-	if(Function)
-	{
-		BOOL (*SetProcessDpiAwarenessContext)(DPI_AWARENESS_CONTEXT) = Function;
-		if(!SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2))
-		{
-		  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
-		}
-		return;
-	}
-	HMODULE ShellCore = LoadLibraryA("shcore.dll");
-	Function = GetProcAddress(ShellCore, "SetProcessDpiAwareness");
-	if(Function)
-	{
-		HRESULT (*SetProcessDpiAwareness)(PROCESS_DPI_AWARENESS) = Function;
-		SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-		return;
-	}
-	Function = GetProcAddress(Winuser, "SetProcessDPIAware");
-	if(Function)
-	{
-		BOOL (*SetProcessDPIAware)(void) = Function;
-		SetProcessDPIAware();
-	}
-}
-
 static LRESULT CALLBACK
 window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 {
