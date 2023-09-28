@@ -2,9 +2,6 @@
 	#define NOMINMAX
 	#define WIN32_LEAN_AND_MEAN
 	#include<windows.h>
-	#include<shlwapi.h>
-	#include<pathcch.h>
-	#include<shellscalingapi.h>
 	#include"flare_windows.h"
 	#include"flare_windows_resource.h"
 #elif defined(FLARE_SYSTEM_LINUX) || defined(FLARE_SYSTEM_MACOS)
@@ -27,15 +24,6 @@
 
 #include<math.h>
 #include<stdint.h>
-//#include<time.h>
-//#include<tgmath.h>
-//#include<signal.h>
-//#include<errno.h>
-//#include<ctype.h>
-//#include<string.h>
-//#include<stdio.h>
-//#include<stdarg.h>
-//#include<stdlib.h>
 
 #include"flare.h"
 

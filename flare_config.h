@@ -105,7 +105,7 @@ typedef enum
 	VOLUMETRIC_LIGHTING_QUALITY_HIGH,
 	VOLUMETRIC_LIGHTING_QUALITY_MAX,
 	VOLUMETRIC_LIGHTING_QUALITY_LOW,
-}
+};
 
 typedef struct
 {
@@ -121,4 +121,4 @@ typedef struct
 	bool_t ContactShadows;
 	bool_t DepthOfField;
 	bool_t GlobalIllumination;
-} flare_config;
+} config_video;
