@@ -1,14 +1,6 @@
-#define FLARE_WINDOW_TITLE L"Flare"
-#define FLARE_WNDCLASS_NAME L"flare_wndclass"
 #define WINDOW_TOOLBAR_WIDTH 150
 #define VIEWPORT_MARGIN_X 20
 #define VIEWPORT_MARGIN_Y 20
-
-
-#define INI_SECTION_VIDEO L"Video"
-#define INI_SECTION_AUDIO L"Audio"
-#define INI_SECTION_INPUT L"Input"
-#define INI_SECTION_GENERAL L"General"
 
 enum window_menu_items
 {
@@ -32,3 +24,11 @@ static DWORD THREAD_ID_LOGGING;
 static DWORD THREAD_ID_SOUND;
 static DWORD THREAD_ID_INPUT;
 static DWORD THREAD_ID_RENDERER;
+
+static WCHAR WINDOW_TITLE[] = L"Flare";
+static WCHAR WNDCLASS_NAME[] = L"flare_wndclass";
+
+static WCHAR INI_SECTION_VIDEO[] = L"Video";
+static WCHAR INI_SECTION_AUDIO[] = L"Audio";
+static WCHAR INI_SECTION_INPUT[] = L"Input";
+static WCHAR INI_SECTION_GENERAL[] = L"General";

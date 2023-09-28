@@ -59,7 +59,7 @@ create_main_window(void)
 	{
 		.cbSize = sizeof(WindowClass),
 		.lpfnWndProc = window_proc,
-		.lpszClassName = L"flare_wndclass",
+		.lpszClassName = WNDCLASS_NAME,
 		.style = CS_HREDRAW | CS_VREDRAW,
 		.hInstance = Instance,
 		.hCursor = LoadCursorW(0, MAKEINTRESOURCEW(IDC_ARROW)),
@@ -75,7 +75,7 @@ create_main_window(void)
 	RegisterClassExW(&WindowClass);
 	DWORD WindowStyle = WS_BORDER | WS_CLIPCHILDREN | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU;
 	DWORD WindowStyleEx = WS_EX_ACCEPTFILES;
-	HWND Result = CreateWindowExW(WindowStyleEx, FLARE_WNDCLASS_NAME, FLARE_WINDOW_TITLE, WindowStyle, 0, 0, ScreenWidth, ScreenHeight, 0, 0, 0, 0);
+	HWND Result = CreateWindowExW(WindowStyleEx, WNDCLASS_NAME, WINDOW_TITLE, WindowStyle, 0, 0, ScreenWidth, ScreenHeight, 0, 0, 0, 0);
 	Assert(Result);
 	int ViewportWidth = ScreenWidth/2 - WINDOW_TOOLBAR_WIDTH - (2 * VIEWPORT_MARGIN_X);
 	int ViewportHeight = ScreenHeight/2 - (3 * VIEWPORT_MARGIN_Y);
@@ -100,12 +100,12 @@ create_main_window(void)
 void WinMainCRTStartup(void)
 {
 	rpvgi__enable_process_dpi_awareness();
-	HWND MainWindow = FindWindowW(FLARE_WNDCLASS_NAME, FLARE_WINDOW_TITLE);
+	HWND MainWindow = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
 	if(MainWindow)
 	{
 		WCHAR* Message = L"Flare is already running. Launch another instance?";
 		UINT MessageType = MB_YESNO | MB_ICONINFORMATION;
-		int Response = MessageBoxW(MainWindow, Message, FLARE_WINDOW_TITLE, MessageType);
+		int Response = MessageBoxW(MainWindow, Message, WINDOW_TITLE, MessageType);
 		if(Response == IDNO)
 		{
 			goto label_program_exit;
