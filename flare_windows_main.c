@@ -129,7 +129,7 @@ create_main_window(void)
 
 void WinMainCRTStartup(void)
 {
-	enable_dpi_awareness();
+	rpvgi__enable_process_dpi_awareness();
 	HWND MainWindow = FindWindowW(FLARE_WNDCLASS_NAME, FLARE_WINDOW_TITLE);
 	if(MainWindow)
 	{

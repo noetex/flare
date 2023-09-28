@@ -40,6 +40,7 @@
 #include"flare.h"
 
 #ifdef FLARE_SYSTEM_WINDOWS
+	#include"3rd_party/rpvgi/rpvgi_windows_commons.c"
 	#include"flare_windows_thread_sound.c"
 	#include"flare_windows_thread_renderer.c"
 	#include"flare_windows_main.c"
