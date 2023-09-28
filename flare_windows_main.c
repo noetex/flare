@@ -31,23 +31,43 @@ create_main_window(void)
 	return Result;
 }
 
+static HGLRC
+create_opengl_context(HDC WindowDC)
+{
+	PIXELFORMATDESCRIPTOR Descriptor = {0};
+	Descriptor.nSize = sizeof(Descriptor);
+	Descriptor.nVersion = 1;
+	Descriptor.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+	Descriptor.iPixelType = PFD_TYPE_RGBA;
+	Descriptor.cColorBits = 32;
+	Descriptor.cDepthBits = 32;
+	int PixelFormat = ChoosePixelFormat(WindowDC, &Descriptor);
+	SetPixelFormat(WindowDC, PixelFormat, &Descriptor);
+	DescribePixelFormat(WindowDC, PixelFormat, sizeof(Descriptor), &Descriptor);
+	HGLRC Result = wglCreateContext(WindowDC);
+	wglMakeCurrent(WindowDC, Result);
+	return Result;
+}
+
 void WinMainCRTStartup(void)
 {
 	rpvgi__enable_process_dpi_awareness();
-	HWND MainWindow = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
-	if(MainWindow)
+	HWND Window = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
+	if(Window)
 	{
 		WCHAR* Message = L"Flare is already running. Launch another instance?";
 		UINT MessageType = MB_YESNO | MB_ICONINFORMATION;
-		int Response = MessageBoxW(MainWindow, Message, WINDOW_TITLE, MessageType);
+		int Response = MessageBoxW(Window, Message, WINDOW_TITLE, MessageType);
 		if(Response == IDNO)
 		{
 			goto label_program_exit;
 		}
 	}
-	MainWindow = create_main_window();
-	CreateThread(0, 0, thread_renderer, MainWindow, 0, &THREAD_ID_RENDERER);
-	CreateThread(0, 0, thread_sound, 0, 0, &THREAD_ID_SOUND);
+	Window = create_main_window();
+	HDC WindowDC = GetDC(Window);
+	HGLRC ContextGL = create_opengl_context(WindowDC);
+	Assert(glewInit() == GLEW_OK);
+
 	for(;;)
 	{
 		MSG Message;

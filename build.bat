@@ -9,14 +9,14 @@ if /i "%1" equ "clean" (
 
 set exit_code=0
 set target_files=flare.c
-set lib_files=kernel32.lib user32.lib d3d11.lib libucrt.lib vcruntime.lib shlwapi.lib pathcch.lib gdi32.lib
+set lib_files=kernel32.lib user32.lib d3d11.lib libucrt.lib vcruntime.lib shlwapi.lib pathcch.lib gdi32.lib opengl32.lib "3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
 set exe_filename=flare_win32.exe
 
 if /i "%1" equ "clang" goto label_build_clang
 
 :label_build_msvc
 set base_flags=/nologo /W3 /D FLARE_SYSTEM_WINDOWS /D FLARE_COMPILER_MSVC /I 3rd_party/imgui
-set link_flags=/WX /incremental:no /opt:ref,icf
+set link_flags=/WX /incremental:no /opt:ref,icf /ignore:4099
 
 if /i "%1" equ "release" (
 	set base_flags=%base_flags% /O2

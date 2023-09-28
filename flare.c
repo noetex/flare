@@ -25,6 +25,9 @@
 #include<math.h>
 #include<stdint.h>
 
+#define GLEW_STATIC
+#include"3rd_party/glew-2.2.0/include/GL/glew.h"
+
 #include"flare.h"
 
 #ifdef FLARE_SYSTEM_WINDOWS
