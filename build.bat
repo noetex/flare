@@ -21,7 +21,7 @@ set link_flags=/WX /incremental:no /opt:ref,icf
 if /i "%1" equ "release" (
 	set base_flags=%base_flags% /O2
 ) else (
-	set base_flags=%base_flags% /Zi /D _DEBUG
+	set base_flags=%base_flags% /Zi /D FLARE_BUILD_DEBUG
 )
 
 rem set dll_flags=%base_flags% /LDd /link %link_flags%

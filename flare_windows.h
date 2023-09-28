@@ -1,7 +1,3 @@
-#ifdef _DEBUG
-	#define FLARE_BUILD_DEBUG
-#endif
-
 #define FLARE_WINDOW_TITLE L"Flare"
 #define FLARE_WNDCLASS_NAME L"flare_wndclass"
 #define WINDOW_TOOLBAR_WIDTH 150
