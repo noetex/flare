@@ -8,8 +8,9 @@ if /i "%1" equ "clean" (
 )
 
 set exit_code=0
-set target_files=flare.c
-set lib_files=kernel32.lib user32.lib d3d11.lib libucrt.lib vcruntime.lib shlwapi.lib pathcch.lib gdi32.lib opengl32.lib "3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
+set target_files=flare.cpp
+set lib_files=kernel32.lib user32.lib d3d11.lib d3dcompiler.lib
+rem set lib_files=kernel32.lib user32.lib d3d11.lib libucrt.lib vcruntime.lib shlwapi.lib pathcch.lib gdi32.lib opengl32.lib "3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
 set exe_filename=flare_win32.exe
 
 if /i "%1" equ "clang" goto label_build_clang
