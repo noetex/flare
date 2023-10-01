@@ -1,0 +1,143 @@
+#ifndef GL_VERSION_3_3
+#define GL_VERSION_3_3 1
+GLAPI int GLAD_GL_VERSION_3_3;
+
+enum
+{
+	GL_VERTEX_ATTRIB_ARRAY_DIVISOR = 0x88FE,
+	GL_SRC1_COLOR = 0x88F9,
+	GL_ONE_MINUS_SRC1_COLOR = 0x88FA,
+	GL_ONE_MINUS_SRC1_ALPHA = 0x88FB,
+	GL_MAX_DUAL_SOURCE_DRAW_BUFFERS = 0x88FC,
+	GL_ANY_SAMPLES_PASSED = 0x8C2F,
+	GL_SAMPLER_BINDING = 0x8919,
+	GL_RGB10_A2UI = 0x906F,
+	GL_TEXTURE_SWIZZLE_R = 0x8E42,
+	GL_TEXTURE_SWIZZLE_G = 0x8E43,
+	GL_TEXTURE_SWIZZLE_B = 0x8E44,
+	GL_TEXTURE_SWIZZLE_A = 0x8E45,
+	GL_TEXTURE_SWIZZLE_RGBA = 0x8E46,
+	GL_TIME_ELAPSED = 0x88BF,
+	GL_TIMESTAMP = 0x8E28,
+	GL_INT_2_10_10_10_REV = 0x8D9F,
+};
+
+typedef void (APIENTRYP PFNGLBINDFRAGDATALOCATIONINDEXEDPROC)(GLuint program, GLuint colorNumber, GLuint index, const GLchar *name);
+typedef GLint (APIENTRYP PFNGLGETFRAGDATAINDEXPROC)(GLuint program, const GLchar *name);
+typedef void (APIENTRYP PFNGLGENSAMPLERSPROC)(GLsizei count, GLuint *samplers);
+typedef void (APIENTRYP PFNGLDELETESAMPLERSPROC)(GLsizei count, const GLuint *samplers);
+typedef GLboolean (APIENTRYP PFNGLISSAMPLERPROC)(GLuint sampler);
+typedef void (APIENTRYP PFNGLBINDSAMPLERPROC)(GLuint unit, GLuint sampler);
+typedef void (APIENTRYP PFNGLSAMPLERPARAMETERIPROC)(GLuint sampler, GLenum pname, GLint param);
+typedef void (APIENTRYP PFNGLSAMPLERPARAMETERIVPROC)(GLuint sampler, GLenum pname, const GLint *param);
+typedef void (APIENTRYP PFNGLSAMPLERPARAMETERFPROC)(GLuint sampler, GLenum pname, GLfloat param);
+typedef void (APIENTRYP PFNGLSAMPLERPARAMETERFVPROC)(GLuint sampler, GLenum pname, const GLfloat *param);
+typedef void (APIENTRYP PFNGLSAMPLERPARAMETERIIVPROC)(GLuint sampler, GLenum pname, const GLint *param);
+typedef void (APIENTRYP PFNGLSAMPLERPARAMETERIUIVPROC)(GLuint sampler, GLenum pname, const GLuint *param);
+typedef void (APIENTRYP PFNGLGETSAMPLERPARAMETERIVPROC)(GLuint sampler, GLenum pname, GLint *params);
+typedef void (APIENTRYP PFNGLGETSAMPLERPARAMETERIIVPROC)(GLuint sampler, GLenum pname, GLint *params);
+typedef void (APIENTRYP PFNGLGETSAMPLERPARAMETERFVPROC)(GLuint sampler, GLenum pname, GLfloat *params);
+typedef void (APIENTRYP PFNGLGETSAMPLERPARAMETERIUIVPROC)(GLuint sampler, GLenum pname, GLuint *params);
+typedef void (APIENTRYP PFNGLQUERYCOUNTERPROC)(GLuint id, GLenum target);
+typedef void (APIENTRYP PFNGLGETQUERYOBJECTI64VPROC)(GLuint id, GLenum pname, GLint64 *params);
+typedef void (APIENTRYP PFNGLGETQUERYOBJECTUI64VPROC)(GLuint id, GLenum pname, GLuint64 *params);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBDIVISORPROC)(GLuint index, GLuint divisor);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP1UIPROC)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP1UIVPROC)(GLuint index, GLenum type, GLboolean normalized, const GLuint *value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP2UIPROC)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP2UIVPROC)(GLuint index, GLenum type, GLboolean normalized, const GLuint *value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP3UIPROC)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP3UIVPROC)(GLuint index, GLenum type, GLboolean normalized, const GLuint *value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP4UIPROC)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXATTRIBP4UIVPROC)(GLuint index, GLenum type, GLboolean normalized, const GLuint *value);
+typedef void (APIENTRYP PFNGLVERTEXP2UIPROC)(GLenum type, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXP2UIVPROC)(GLenum type, const GLuint *value);
+typedef void (APIENTRYP PFNGLVERTEXP3UIPROC)(GLenum type, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXP3UIVPROC)(GLenum type, const GLuint *value);
+typedef void (APIENTRYP PFNGLVERTEXP4UIPROC)(GLenum type, GLuint value);
+typedef void (APIENTRYP PFNGLVERTEXP4UIVPROC)(GLenum type, const GLuint *value);
+typedef void (APIENTRYP PFNGLTEXCOORDP1UIPROC)(GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP1UIVPROC)(GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP2UIPROC)(GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP2UIVPROC)(GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP3UIPROC)(GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP3UIVPROC)(GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP4UIPROC)(GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLTEXCOORDP4UIVPROC)(GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP1UIPROC)(GLenum texture, GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP1UIVPROC)(GLenum texture, GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP2UIPROC)(GLenum texture, GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP2UIVPROC)(GLenum texture, GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP3UIPROC)(GLenum texture, GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP3UIVPROC)(GLenum texture, GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP4UIPROC)(GLenum texture, GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLMULTITEXCOORDP4UIVPROC)(GLenum texture, GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLNORMALP3UIPROC)(GLenum type, GLuint coords);
+typedef void (APIENTRYP PFNGLNORMALP3UIVPROC)(GLenum type, const GLuint *coords);
+typedef void (APIENTRYP PFNGLCOLORP3UIPROC)(GLenum type, GLuint color);
+typedef void (APIENTRYP PFNGLCOLORP3UIVPROC)(GLenum type, const GLuint *color);
+typedef void (APIENTRYP PFNGLCOLORP4UIPROC)(GLenum type, GLuint color);
+typedef void (APIENTRYP PFNGLCOLORP4UIVPROC)(GLenum type, const GLuint *color);
+typedef void (APIENTRYP PFNGLSECONDARYCOLORP3UIPROC)(GLenum type, GLuint color);
+typedef void (APIENTRYP PFNGLSECONDARYCOLORP3UIVPROC)(GLenum type, const GLuint *color);
+
+GLAPI PFNGLBINDFRAGDATALOCATIONINDEXEDPROC glBindFragDataLocationIndexed;
+GLAPI PFNGLGETFRAGDATAINDEXPROC glGetFragDataIndex;
+GLAPI PFNGLGENSAMPLERSPROC glGenSamplers;
+GLAPI PFNGLDELETESAMPLERSPROC glDeleteSamplers;
+GLAPI PFNGLISSAMPLERPROC glIsSampler;
+GLAPI PFNGLBINDSAMPLERPROC glBindSampler;
+GLAPI PFNGLSAMPLERPARAMETERIPROC glSamplerParameteri;
+GLAPI PFNGLSAMPLERPARAMETERIVPROC glSamplerParameteriv;
+GLAPI PFNGLSAMPLERPARAMETERFPROC glSamplerParameterf;
+GLAPI PFNGLSAMPLERPARAMETERFVPROC glSamplerParameterfv;
+GLAPI PFNGLSAMPLERPARAMETERIIVPROC glSamplerParameterIiv;
+GLAPI PFNGLSAMPLERPARAMETERIUIVPROC glSamplerParameterIuiv;
+GLAPI PFNGLGETSAMPLERPARAMETERIVPROC glGetSamplerParameteriv;
+GLAPI PFNGLGETSAMPLERPARAMETERIIVPROC glGetSamplerParameterIiv;
+GLAPI PFNGLGETSAMPLERPARAMETERFVPROC glGetSamplerParameterfv;
+GLAPI PFNGLGETSAMPLERPARAMETERIUIVPROC glGetSamplerParameterIuiv;
+GLAPI PFNGLQUERYCOUNTERPROC glQueryCounter;
+GLAPI PFNGLGETQUERYOBJECTI64VPROC glGetQueryObjecti64v;
+GLAPI PFNGLGETQUERYOBJECTUI64VPROC glGetQueryObjectui64v;
+GLAPI PFNGLVERTEXATTRIBDIVISORPROC glVertexAttribDivisor;
+GLAPI PFNGLVERTEXATTRIBP1UIPROC glVertexAttribP1ui;
+GLAPI PFNGLVERTEXATTRIBP1UIVPROC glVertexAttribP1uiv;
+GLAPI PFNGLVERTEXATTRIBP2UIPROC glVertexAttribP2ui;
+GLAPI PFNGLVERTEXATTRIBP2UIVPROC glVertexAttribP2uiv;
+GLAPI PFNGLVERTEXATTRIBP3UIPROC glVertexAttribP3ui;
+GLAPI PFNGLVERTEXATTRIBP3UIVPROC glVertexAttribP3uiv;
+GLAPI PFNGLVERTEXATTRIBP4UIPROC glVertexAttribP4ui;
+GLAPI PFNGLVERTEXATTRIBP4UIVPROC glVertexAttribP4uiv;
+GLAPI PFNGLVERTEXP2UIPROC glVertexP2ui;
+GLAPI PFNGLVERTEXP2UIVPROC glVertexP2uiv;
+GLAPI PFNGLVERTEXP3UIPROC glVertexP3ui;
+GLAPI PFNGLVERTEXP3UIVPROC glVertexP3uiv;
+GLAPI PFNGLVERTEXP4UIPROC glVertexP4ui;
+GLAPI PFNGLVERTEXP4UIVPROC glVertexP4uiv;
+GLAPI PFNGLTEXCOORDP1UIPROC glTexCoordP1ui;
+GLAPI PFNGLTEXCOORDP1UIVPROC glTexCoordP1uiv;
+GLAPI PFNGLTEXCOORDP2UIPROC glTexCoordP2ui;
+GLAPI PFNGLTEXCOORDP2UIVPROC glTexCoordP2uiv;
+GLAPI PFNGLTEXCOORDP3UIPROC glTexCoordP3ui;
+GLAPI PFNGLTEXCOORDP3UIVPROC glTexCoordP3uiv;
+GLAPI PFNGLTEXCOORDP4UIPROC glTexCoordP4ui;
+GLAPI PFNGLTEXCOORDP4UIVPROC glTexCoordP4uiv;
+GLAPI PFNGLMULTITEXCOORDP1UIPROC glMultiTexCoordP1ui;
+GLAPI PFNGLMULTITEXCOORDP1UIVPROC glMultiTexCoordP1uiv;
+GLAPI PFNGLMULTITEXCOORDP2UIPROC glMultiTexCoordP2ui;
+GLAPI PFNGLMULTITEXCOORDP2UIVPROC glMultiTexCoordP2uiv;
+GLAPI PFNGLMULTITEXCOORDP3UIPROC glMultiTexCoordP3ui;
+GLAPI PFNGLMULTITEXCOORDP3UIVPROC glMultiTexCoordP3uiv;
+GLAPI PFNGLMULTITEXCOORDP4UIPROC glMultiTexCoordP4ui;
+GLAPI PFNGLMULTITEXCOORDP4UIVPROC glMultiTexCoordP4uiv;
+GLAPI PFNGLNORMALP3UIPROC glNormalP3ui;
+GLAPI PFNGLNORMALP3UIVPROC glNormalP3uiv;
+GLAPI PFNGLCOLORP3UIPROC glColorP3ui;
+GLAPI PFNGLCOLORP3UIVPROC glColorP3uiv;
+GLAPI PFNGLCOLORP4UIPROC glColorP4ui;
+GLAPI PFNGLCOLORP4UIVPROC glColorP4uiv;
+GLAPI PFNGLSECONDARYCOLORP3UIPROC glSecondaryColorP3ui;
+GLAPI PFNGLSECONDARYCOLORP3UIVPROC glSecondaryColorP3uiv;
+
+#endif
