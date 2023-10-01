@@ -34,6 +34,8 @@
 	enum { false = 0, true = !false };
 #endif
 
-#define array_length(Array) (sizeof(Array)/sizeof(*(Array)))
+#ifndef ARRAYSIZE
+	#define ARRAYSIZE(Array) (sizeof(Array)/sizeof((Array)[0]))
+#endif
 
 typedef int bool_t;
