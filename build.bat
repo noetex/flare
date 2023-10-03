@@ -1,17 +1,14 @@
 @echo off
 
 if /i "%1" equ "clean" (
-	rem pushd build
 	del *.obj *.exe *.pdb *.exp *.lib *.dll *.ilk *.res>nul
-	rem popd
 	exit /b 0
 )
 
 set exit_code=0
-set target_files=flare.cpp
-set lib_files=kernel32.lib user32.lib d3d11.lib d3dcompiler.lib
-rem set lib_files=kernel32.lib user32.lib d3d11.lib libucrt.lib vcruntime.lib shlwapi.lib pathcch.lib gdi32.lib opengl32.lib "3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
-set exe_filename=flare_win32.exe
+set target_files=flare.c
+set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib
+set exe_filename=flare.exe
 
 if /i "%1" equ "clang" goto label_build_clang
 
