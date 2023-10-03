@@ -5,15 +5,17 @@ if /i "%1" equ "clean" (
 	exit /b 0
 )
 
+if not exist build mkdir build
+
 set exit_code=0
 set target_files=flare.c
 set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib
-set exe_filename=flare.exe
+set exe_filename=build\flare.exe
 
 if /i "%1" equ "clang" goto label_build_clang
 
 :label_build_msvc
-set base_flags=/nologo /W3 /D FLARE_SYSTEM_WINDOWS /D FLARE_COMPILER_MSVC /I 3rd_party/imgui
+set base_flags=/nologo /W3 /Fo:build\flare.obj /Fd:build\garbage.pdb /D FLARE_SYSTEM_WINDOWS /D FLARE_COMPILER_MSVC
 set link_flags=/WX /incremental:no /opt:ref,icf /ignore:4099
 
 if /i "%1" equ "release" (

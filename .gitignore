@@ -1,5 +1,1 @@
-.vs
-*.obj
-*.exe
-*.ini
-*.pdb
+build/.vs
