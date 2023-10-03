@@ -11,11 +11,14 @@ set exit_code=0
 set target_files=flare.c
 set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib
 set exe_filename=build\flare.exe
+set obj_filename=build\flare.obj
+set pdb_filename=build\garbage.pdb
+
 
 if /i "%1" equ "clang" goto label_build_clang
 
 :label_build_msvc
-set base_flags=/nologo /W3 /Fo:build\flare.obj /Fd:build\garbage.pdb /D FLARE_SYSTEM_WINDOWS /D FLARE_COMPILER_MSVC
+set base_flags=/nologo /W3 /D FLARE_SYSTEM_WINDOWS /D FLARE_COMPILER_MSVC
 set link_flags=/WX /incremental:no /opt:ref,icf /ignore:4099
 
 if /i "%1" equ "release" (
@@ -34,7 +37,7 @@ rem call cl flare_windows_dll_xinput.c /Fe:flare_xinput.dll %dll_flags%
 rem call cl flare_windows_dll_xaudio.c /Fe:flare_xaudio.dll %dll_flags%
 rem call cl flare_windows_dll_d3d11.cpp /Fe:flare_d3d11.dll %dll_flags%
 rem call cl flare_windows_dll_d3d12.cpp /Fe:flare_d3d12.dll %dll_flags%
-call cl %target_files% /Fe:%exe_filename% %exe_flags%
+call cl %target_files% /Fe:%exe_filename% /Fo:%obj_filename% /Fd:%pdb_filename% %exe_flags%
 exit /b %errorlevel%
 
 :label_build_clang
