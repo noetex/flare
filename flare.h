@@ -2,6 +2,8 @@
 	#define FORCE_INLINE __forceinline
 	#define DLL_EXPORT __declspec(dllexport)
 	#define DLL_IMPORT __declspec(dllimport)
+	#define CALLING_CONVENTION_CDECL __cdecl
+	#define CALLING_CONVENTION_STDCALL __stdcall
 	#define debug_break(...) __debugbreak()
 	#define ALIGNED(Alignment) __declspec(align(Alignment))
 #elif defined(FLARE_COMPILER_GCC) || defined(FLARE_COMPILER_CLANG)
@@ -9,6 +11,8 @@
 	#define DLL_EXPORT __attribute__((dllexport))
 	#define DLL_IMPORT __attribute__((dllimport))
 	//#define DLL_IMPORT __attribute__((visibility("default")))
+	#define CALLING_CONVENTION_CDECL __attribute__((cdecl))
+	#define CALLING_CONVENTION_STDCALL __attribute__((stdcall))
 	#define debug_break(...) __builtin_trap()
 	#define ALIGNED(Alignment) __attribute__((aligned(Alignment)))
 #else
