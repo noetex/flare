@@ -55,6 +55,8 @@ void WinMainCRTStartup(void)
 		}
 	}
 
+	AllocConsole();
+
 	WCHAR ConfigFileName[MAX_PATH] = {0};
 	GetModuleFileNameW(0, ConfigFileName, ARRAYSIZE(ConfigFileName));
 	PathRenameExtensionW(ConfigFileName, L".ini");
