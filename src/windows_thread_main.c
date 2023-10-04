@@ -18,6 +18,24 @@ window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 	return Result;
 }
 
+static HMENU
+create_main_menu(void)
+{
+	HMENU File = CreatePopupMenu();
+	AppendMenuW(File, MF_STRING, MENUITEM_FILE_OPEN, L"Open...");
+	HMENU Config = CreatePopupMenu();
+	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_VIDEO, L"Video");
+	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_AUDIO, L"Audio");
+	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_INPUT, L"Input");
+	HMENU Misc = CreatePopupMenu();
+	AppendMenuW(Misc, MF_STRING, MENUITEM_MISC_ABOUT, L"About");
+	HMENU Result = CreateMenu();
+	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)File, L"File");
+	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Config, L"Config");
+	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Misc, L"Misc");
+	return Result;
+}
+
 void WinMainCRTStartup(void)
 {
 	SYSTEM_DLL_KERNEL32 = load_system_dll("kernel32.dll");
@@ -42,15 +60,16 @@ void WinMainCRTStartup(void)
 	PathRenameExtensionW(ConfigFileName, L".ini");
 	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, ConfigFileName);
 
-
 	WNDCLASSEXW WindowClass = {0};
 	WindowClass.cbSize = sizeof(WindowClass);
 	WindowClass.lpfnWndProc = window_proc;
 	WindowClass.lpszClassName = WNDCLASS_NAME;
 	RegisterClassExW(&WindowClass);
-	Window = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_OVERLAPPEDWINDOW, 0, 0, 0, 0, 0, 0, 0, 0);
+	HMENU MainMenu = create_main_menu();
+	Window = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_POPUP, 0, 0, 0, 0, 0, MainMenu, 0, 0);
 	HDC WindowDC = GetDC(Window);
-
+	HGLRC ContextGL = create_opengl_context(WindowDC);
+	Assert(glewInit() == GLEW_OK);
 	ShowWindow(Window, SW_MAXIMIZE);
 
 	MSG Message;
