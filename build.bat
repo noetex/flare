@@ -9,7 +9,7 @@ if not exist build mkdir build
 
 set exit_code=0
 set target_files=flare.c
-set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib
+set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib "B:\flare\3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
 set exe_filename=build\flare.exe
 set obj_filename=build\flare.obj
 set pdb_filename=build\garbage.pdb
