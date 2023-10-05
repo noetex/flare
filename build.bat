@@ -12,8 +12,8 @@ set target_files=flare.c
 set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib "B:\flare\3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
 set exe_filename=build\flare.exe
 set obj_filename=build\flare.obj
+set res_filename=build\flare.res
 set pdb_filename=build\garbage.pdb
-
 
 if /i "%1" equ "clang" goto label_build_clang
 
@@ -27,18 +27,19 @@ if /i "%1" equ "release" (
 	set base_flags=%base_flags% /Zi /D FLARE_BUILD_DEBUG
 )
 
-rem set dll_flags=%base_flags% /LDd /link %link_flags%
-set exe_flags=%base_flags% /link %link_flags% /subsystem:windows %lib_files%
+call rc /nologo /fo %res_filename% flare.rc
+set exe_flags=%base_flags% /Fe:%exe_filename% /Fo:%obj_filename% /Fd:%pdb_filename%
+call cl %target_files% %exe_flags% /link %link_flags% /subsystem:windows %lib_files% %res_filename%
+exit /b %errorlevel%
 
-rem call rc flare_windows_resource.rc /nologo /y /fo flare_resource.res
+rem set dll_flags=%base_flags% /LDd /link %link_flags%
+
 rem call cl flare_windows_dll_opengl.c /Fe:flare_opengl.dll %dll_flags%
 rem call cl flare_windows_dll_vulkan.c /Fe:flare_vulkan.dll %dll_flags%
 rem call cl flare_windows_dll_xinput.c /Fe:flare_xinput.dll %dll_flags%
 rem call cl flare_windows_dll_xaudio.c /Fe:flare_xaudio.dll %dll_flags%
 rem call cl flare_windows_dll_d3d11.cpp /Fe:flare_d3d11.dll %dll_flags%
 rem call cl flare_windows_dll_d3d12.cpp /Fe:flare_d3d12.dll %dll_flags%
-call cl %target_files% /Fe:%exe_filename% /Fo:%obj_filename% /Fd:%pdb_filename% %exe_flags%
-exit /b %errorlevel%
 
 :label_build_clang
 set base_flags=-Wall -nostdlib -nostdlib++ -D FLARE_COMPILER_CLANG

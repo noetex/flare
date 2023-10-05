@@ -1,7 +1,10 @@
 #include<winres.h>
 #include<winuser.rh>
-#include"flare_windows_resource.h"
+#include"src/windows_resource.h"
 
+#define VS_VERSION_INFO 1
+
+#if 0
 #define BUTTON_WIDTH_SMALL 25
 #define BUTTON_WIDTH_NORMAL 50
 #define BUTTON_WIDTH_LARGE 75
@@ -9,10 +12,12 @@
 #define MARGIN_VERTICAL 4
 #define MARGIN_HORIZONTAL 2
 
-#define VS_VERSION_INFO 1
 #define DIALOG_WINDOW_STYLE (DS_MODALFRAME | DS_SETFONT | DS_CENTER | WS_SYSMENU | WS_POPUP | WS_CAPTION)
 
 //MAINICON ICON "../nemu_icon_32x32.ico"
+
+
+
 
 DIALOGID_MISC_ABOUT DIALOG 0, 0, 240, 200
 	STYLE DIALOG_WINDOW_STYLE
@@ -24,6 +29,7 @@ DIALOGID_MISC_ABOUT DIALOG 0, 0, 240, 200
 	PUSHBUTTON "Cancel", BUTTONID_CANCEL, 174, 35, 50, 14
 	//GROUPBOX "About NEMU", DIALOGID_STATIC, 7, 7, 225, 52
 }
+#endif
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0
