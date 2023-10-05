@@ -8,7 +8,7 @@ if /i "%1" equ "clean" (
 if not exist build mkdir build
 
 set exit_code=0
-set target_files=flare.c
+set target_files=src/flare.c
 set lib_files=kernel32.lib user32.lib shlwapi.lib vcruntime.lib gdi32.lib opengl32.lib "B:\flare\3rd_party\glew-2.2.0\lib\Release\x64\glew32s.lib"
 set exe_filename=build\flare.exe
 set obj_filename=build\flare.obj
@@ -27,7 +27,7 @@ if /i "%1" equ "release" (
 	set base_flags=%base_flags% /Zi /D FLARE_BUILD_DEBUG
 )
 
-call rc /nologo /fo %res_filename% flare.rc
+call rc /nologo /fo %res_filename% src/flare.rc
 set exe_flags=%base_flags% /Fe:%exe_filename% /Fo:%obj_filename% /Fd:%pdb_filename%
 call cl %target_files% %exe_flags% /link %link_flags% /subsystem:windows %lib_files% %res_filename%
 exit /b %errorlevel%

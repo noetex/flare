@@ -1,6 +1,6 @@
 #include<winres.h>
 #include<winuser.rh>
-#include"src/windows_resource.h"
+#include"flare_windows_resource.h"
 
 #define VS_VERSION_INFO 1
 
