@@ -56,6 +56,10 @@ void WinMainCRTStartup(void)
 	}
 
 	AllocConsole();
+	HANDLE Console = CreateFileA("CON", GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+	SetStdHandle(STD_OUTPUT_HANDLE, Console);
+	char B[] = "Hello World";
+	Assert(WriteFile(Console, B, sizeof(B), 0, 0));
 
 	WCHAR ConfigFileName[MAX_PATH] = {0};
 	GetModuleFileNameW(0, ConfigFileName, ARRAYSIZE(ConfigFileName));
