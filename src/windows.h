@@ -1,7 +1,3 @@
-#define WINDOW_TOOLBAR_WIDTH 150
-#define VIEWPORT_MARGIN_X 20
-#define VIEWPORT_MARGIN_Y 20
-
 enum window_menu_items
 {
 	MENUITEM_FILE_OPEN = 0x8000,
