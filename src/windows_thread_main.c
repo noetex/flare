@@ -13,12 +13,23 @@ window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 			Mouse.hwndTarget = Window;
 			RegisterRawInputDevices(&Mouse, 1, sizeof(Mouse));
 		} break;
+		case WM_SETCURSOR:
+		{
+			bool_t HideMouse = false;
+			if(HideMouse)
+			{
+				if(LOWORD(lParam) == HTCLIENT)
+				{
+					SetCursor(0);
+					Result = TRUE;
+				}
+			}
+		} break;
 		case WM_CLOSE:
 		case WM_DESTROY:
 		{
 			PostQuitMessage(0);
 		} break;
-
 		default:
 		{
 			Result = DefWindowProcW(Window, Message, wParam, lParam);
