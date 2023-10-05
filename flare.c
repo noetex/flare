@@ -11,6 +11,8 @@
 #define GLEW_STATIC
 #include"3rd_party\glew-2.2.0\include\GL\glew.h"
 
+#include<string.h>
+
 #include"flare.h"
 
 #include"src/misc.c"

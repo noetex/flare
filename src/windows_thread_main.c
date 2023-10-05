@@ -40,6 +40,7 @@ void WinMainCRTStartup(void)
 {
 	SYSTEM_DLL_KERNEL32 = load_system_dll("kernel32.dll");
 	SYSTEM_DLL_USER32 = load_system_dll("user32.dll");
+	PROGRAM_HINSTANCE = GetModuleHandleA(0);
 	bool_t A = system_is_64bit();
 	enable_process_dpi_awareness();
 
@@ -61,10 +62,13 @@ void WinMainCRTStartup(void)
 	char B[] = "Hello World";
 	Assert(WriteFile(Console, B, sizeof(B), 0, 0));
 
-	WCHAR ConfigFileName[MAX_PATH] = {0};
-	GetModuleFileNameW(0, ConfigFileName, ARRAYSIZE(ConfigFileName));
-	PathRenameExtensionW(ConfigFileName, L".ini");
-	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, ConfigFileName);
+	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
+	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
+	memcpy(FILENAME_LOG, FILENAME_EXE, sizeof(FILENAME_LOG));
+	PathRenameExtensionW(FILENAME_INI, L".ini");
+	PathRenameExtensionW(FILENAME_LOG, L".log");
+	//HANDLE LogFile = CreateFileA(FILENAME_LOG, GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, FILENAME_INI);
 
 	WNDCLASSEXW WindowClass = {0};
 	WindowClass.cbSize = sizeof(WindowClass);
@@ -84,8 +88,8 @@ void WinMainCRTStartup(void)
 		TranslateMessage(&Message);
 		DispatchMessageW(&Message);
 	}
-	WritePrivateProfileStringW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, L"1", ConfigFileName);
-	WritePrivateProfileStringW(INI_SECTION_GRAPHICS, INI_KEY_GRAPHICS_API, L"1", ConfigFileName);
+	WritePrivateProfileStringW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, L"1", FILENAME_INI);
+	WritePrivateProfileStringW(INI_SECTION_GRAPHICS, INI_KEY_GRAPHICS_API, L"1", FILENAME_INI);
 label_program_exit:
 	ExitProcess(0);
 }
