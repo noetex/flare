@@ -19,5 +19,6 @@
 
 #ifdef FLARE_SYSTEM_WINDOWS
 	#include"flare_windows.c"
+	//#include"flare_windows_thread_renderer.c"
 	#include"flare_windows_thread_main.c"
 #endif
