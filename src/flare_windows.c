@@ -84,7 +84,7 @@ create_opengl_context(HDC WindowDC)
 	Descriptor.cDepthBits = 32;
 	int PixelFormat = ChoosePixelFormat(WindowDC, &Descriptor);
 	SetPixelFormat(WindowDC, PixelFormat, &Descriptor);
-	DescribePixelFormat(WindowDC, PixelFormat, sizeof(Descriptor), &Descriptor);
+	//DescribePixelFormat(WindowDC, PixelFormat, sizeof(Descriptor), &Descriptor);
 	HGLRC Result = wglCreateContext(WindowDC);
 	wglMakeCurrent(WindowDC, Result);
 	return Result;
