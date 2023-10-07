@@ -130,12 +130,6 @@ float TRIANGLE_VERTS[] =
 
 void WinMainCRTStartup(void)
 {
-	SYSTEM_DLL_KERNEL32 = load_system_dll("kernel32.dll");
-	SYSTEM_DLL_USER32 = load_system_dll("user32.dll");
-	PROGRAM_HINSTANCE = GetModuleHandleA(0);
-	bool_t A = system_is_64bit();
-	enable_process_dpi_awareness();
-
 	HWND Window = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
 	if(Window)
 	{
@@ -147,6 +141,12 @@ void WinMainCRTStartup(void)
 			goto label_program_exit;
 		}
 	}
+
+	SYSTEM_DLL_KERNEL32 = load_system_dll("kernel32.dll");
+	SYSTEM_DLL_USER32 = load_system_dll("user32.dll");
+	PROGRAM_HINSTANCE = GetModuleHandleA(0);
+	bool_t A = system_is_64bit();
+	enable_process_dpi_awareness();
 
 	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
 	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
