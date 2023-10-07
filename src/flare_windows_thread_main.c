@@ -1,4 +1,14 @@
 static void
+create_debug_console(void)
+{
+	AllocConsole();
+	HWND ConsoleWindow = GetConsoleWindow();
+	SetWindowPos(ConsoleWindow, HWND_TOP, 0, 0, 800, 600, SWP_SHOWWINDOW);
+	HANDLE Console = CreateFileA("CON", GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+	SetStdHandle(STD_OUTPUT_HANDLE, Console);
+}
+
+static void
 setup_raw_input(HWND Window)
 {
 	RAWINPUTDEVICE Mouse = {0};
@@ -137,12 +147,6 @@ void WinMainCRTStartup(void)
 			goto label_program_exit;
 		}
 	}
-
-	AllocConsole();
-	HANDLE Console = CreateFileA("CON", GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
-	SetStdHandle(STD_OUTPUT_HANDLE, Console);
-	char B[] = "Hello World";
-	Assert(WriteFile(Console, B, sizeof(B), 0, 0));
 
 	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
 	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
