@@ -1,18 +1,20 @@
+static void
+setup_raw_input(HWND Window)
+{
+	RAWINPUTDEVICE Mouse = {0};
+	Mouse.usUsagePage = HID_USAGE_PAGE_GENERIC;
+	Mouse.usUsage = HID_USAGE_GENERIC_MOUSE;
+	Mouse.dwFlags = RIDEV_NOLEGACY;
+	Mouse.hwndTarget = Window;
+	RegisterRawInputDevices(&Mouse, 1, sizeof(Mouse));
+}
+
 static LRESULT CALLBACK
 window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT Result = 0;
 	switch(Message)
 	{
-		case WM_CREATE:
-		{
-			RAWINPUTDEVICE Mouse = {0};
-			Mouse.usUsagePage = HID_USAGE_PAGE_GENERIC;
-			Mouse.usUsage = HID_USAGE_GENERIC_MOUSE;
-			Mouse.dwFlags = RIDEV_NOLEGACY;
-			Mouse.hwndTarget = Window;
-			RegisterRawInputDevices(&Mouse, 1, sizeof(Mouse));
-		} break;
 		case WM_SETCURSOR:
 		{
 			bool_t HideMouse = false;
