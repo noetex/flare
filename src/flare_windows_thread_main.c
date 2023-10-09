@@ -27,7 +27,7 @@ window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_SETCURSOR:
 		{
-			bool_t HideMouse = false;
+			bool_t HideMouse = true;
 			if(HideMouse)
 			{
 				if(LOWORD(lParam) == HTCLIENT)
@@ -36,6 +36,22 @@ window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 					Result = TRUE;
 				}
 			}
+		} break;
+		case WM_INPUT:
+		{
+			RAWINPUT Device;
+			HRAWINPUT Mouse = (HRAWINPUT)lParam;
+			UINT InputBufferSize = sizeof(Device);
+			UINT BytesCopied = GetRawInputData(Mouse, RID_INPUT, &Device, &InputBufferSize, sizeof(Device.header));
+			Assert(BytesCopied == InputBufferSize);
+			float MouseSensitivity = 0.003f;
+			Assert(Device.data.mouse.usFlags == MOUSE_MOVE_RELATIVE);
+			LONG DeltaX = Device.data.mouse.lLastX;
+			LONG DeltaY = Device.data.mouse.lLastY;
+			camera* Camera = (camera*)GetWindowLongPtrW(Window, GWLP_USERDATA);
+			Assert(Camera);
+			Camera->Yaw -= DeltaX * MouseSensitivity;
+			Camera->Pitch -= DeltaY * MouseSensitivity;
 		} break;
 		case WM_CLOSE:
 		case WM_DESTROY:
@@ -120,11 +136,14 @@ CreateOpenGLProgram(GLuint VertexShader, GLuint FragmentShader)
 	return Result;
 }
 
-float TRIANGLE_VERTS[] =
+float PLANE_2D_VERTS[] =
 {
-	-0.5, -0.5, 0.0,
-	0.0, 0.5, 0.0,
-	0.5, -0.5, 0.0,
+	-1, 0, -1,
+	-1, 0,  1,
+	 1, 0,  1,
+	 1, 0,  1,
+	 1, 0, -1,
+	-1, 0, -1,
 };
 
 
@@ -163,6 +182,8 @@ void WinMainCRTStartup(void)
 	RegisterClassExW(&WindowClass);
 	HMENU MainMenu = create_main_menu();
 	Window = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_POPUP, 0, 0, 0, 0, 0, MainMenu, 0, 0);
+	setup_raw_input(Window);
+
 	//CreateThread(0, 0, thread_renderer, Window, 0, &THREAD_ID_RENDERER);
 
 	HDC WindowDC = GetDC(Window);
@@ -187,10 +208,26 @@ void WinMainCRTStartup(void)
 
 	glBindVertexArray(VertexArray);
 	glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(TRIANGLE_VERTS), TRIANGLE_VERTS, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(PLANE_2D_VERTS), PLANE_2D_VERTS, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(0);
 	glClearColor(0.4f, 0.2f, 0.8f, 1.0f);
+
+	camera Camera = {0};
+	Camera.Position = (vector3){0, 1, 0};
+	Camera.Right = VECTOR3_UNIT_X;
+	Camera.Up = VECTOR3_UNIT_Y;
+	Camera.Front = VECTOR3_UNIT_Z;
+	SetWindowLongPtrW(Window, GWLP_USERDATA, (LONG_PTR)&Camera);
+	float CameraSpeed = 5.0f;
+
+	matrix4 Perspective = matrix4_perspective((float)M_PI/4, (float)WindowHeight/WindowWidth, 0.1f, 100);
+	glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, "Perspective"), 1, GL_FALSE, (float*)(&Perspective));
+
+	LARGE_INTEGER Frequency = {0};
+	LARGE_INTEGER T1 = {0};
+	LARGE_INTEGER T2 = {0};
+	QueryPerformanceFrequency(&Frequency);
 
 	MSG Message;
 	for(;;)
@@ -204,8 +241,43 @@ void WinMainCRTStartup(void)
 			TranslateMessage(&Message);
 			DispatchMessageW(&Message);
 		}
+		QueryPerformanceCounter(&T2);
+		float DeltaTime = (float)(T2.QuadPart - T1.QuadPart)/Frequency.QuadPart;
+		T1 = T2;
+
+		float MoveStep = CameraSpeed * DeltaTime;
+		if(GetAsyncKeyState('W') >> 15)
+		{
+			vector3 Backward = Camera_AxisZ(Camera);
+			vector3 Step = vector3_mul(Backward, -MoveStep);
+			Camera.Position.X += Step.X;
+			Camera.Position.Z += Step.Z;
+		}
+		if(GetAsyncKeyState('S') >> 15)
+		{
+			vector3 Backward = Camera_AxisZ(Camera);
+			vector3 Step = vector3_mul(Backward, MoveStep);
+			Camera.Position.X += Step.X;
+			Camera.Position.Z += Step.Z;
+		}
+		if(GetAsyncKeyState('A') >> 15)
+		{
+			vector3 Left = Camera_AxisX(Camera);
+			vector3 Step = vector3_mul(Left, -MoveStep);
+			Camera.Position = vector3_add(Camera.Position, Step);
+		}
+		if(GetAsyncKeyState('D') >> 15)
+		{
+			vector3 Left = Camera_AxisX(Camera);
+			vector3 Step = vector3_mul(Left, MoveStep);
+			Camera.Position = vector3_add(Camera.Position, Step);
+		}
+
+		matrix4 View = CameraView(&Camera);
+		glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, "View"), 1, GL_FALSE, (float*)(&View));
+
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		GLenum Error = glGetError();
 		Assert(SwapBuffers(WindowDC));
 	}

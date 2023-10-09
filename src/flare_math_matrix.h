@@ -106,8 +106,8 @@ matrix4_rotate_x(float Angle)
 	float C = cosf(Angle);
 	matrix4 Result;
 	Result.AxisX = VECTOR4_UNIT_X;
-	Result.AxisY = {0, C, S, 0};
-	Result.AxisZ = {0, -S, C, 0};
+	Result.AxisY = (vector4){0, C, S, 0};
+	Result.AxisZ = (vector4){0, -S, C, 0};
 	Result.AxisW = VECTOR4_UNIT_W;
 	return Result;
 }
@@ -118,9 +118,9 @@ matrix4_rorate_y(float Angle)
 	float S = sinf(Angle);
 	float C = cosf(Angle);
 	matrix4 Result;
-	Result.AxisX = {C, 0, -S, 0};
+	Result.AxisX = (vector4){C, 0, -S, 0};
 	Result.AxisY = VECTOR4_UNIT_Y;
-	Result.AxisZ = {S, 0, C, 0};
+	Result.AxisZ = (vector4){S, 0, C, 0};
 	Result.AxisW = VECTOR4_UNIT_W;
 	return Result;
 }
@@ -131,8 +131,8 @@ matrix4_rotate_z(float Angle)
 	float S = sinf(Angle);
 	float C = cosf(Angle);
 	matrix4 Result;
-	Result.AxisX = {C, -S, 0, 0};
-	Result.AxisY = {S, C, 0, 0};
+	Result.AxisX = (vector4){C, -S, 0, 0};
+	Result.AxisY = (vector4){S, C, 0, 0};
 	Result.AxisZ = VECTOR4_UNIT_Z;
 	Result.AxisW = VECTOR4_UNIT_W;
 	return Result;
@@ -196,5 +196,18 @@ matrix4_scale(vector3 Scale)
 	Result.AxisX.X = Scale.X;
 	Result.AxisY.Y = Scale.Y;
 	Result.AxisZ.Z = Scale.Z;
+	return Result;
+}
+
+static matrix4
+matrix4_perspective(float FieldOfView, float AspectRatio, float Near, float Far)
+{
+	float F = 1/tanf(FieldOfView/2);
+	float Q = 1/(Near - Far);
+	matrix4 Result;
+	Result.AxisX = (vector4){AspectRatio*F, 0, 0, 0};
+	Result.AxisY = (vector4){0, F, 0, 0};
+	Result.AxisZ = (vector4){0, 0, Q*(Far+Near), -1};
+	Result.AxisW = (vector4){0, 0, Q*(2*Far*Near), 0};
 	return Result;
 }

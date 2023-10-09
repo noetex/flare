@@ -42,4 +42,8 @@
 	#define ARRAYSIZE(Array) (sizeof(Array)/sizeof((Array)[0]))
 #endif
 
+#define MIN(A, B) ((A) < (B) ? (A) : (B))
+#define MAX(A, B) ((A) > (B) ? (A) : (B))
+#define CLAMP(Value, Min, Max) (MIN((Max), MAX((Min), (Value))))
+
 typedef int bool_t;

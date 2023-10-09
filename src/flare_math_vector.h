@@ -2,11 +2,14 @@ typedef struct { float X, Y; } vector2;
 typedef struct { float X, Y, Z; } vector3;
 typedef struct { float X, Y, Z, W; } vector4;
 
+static vector2 VECTOR2_ZERO = {0, 0};
 static vector2 VECTOR2_UNIT_X = {1, 0};
 static vector2 VECTOR2_UNIT_Y = {0, 1};
+static vector3 VECTOR3_ZERO = {0, 0, 0};
 static vector3 VECTOR3_UNIT_X = {1, 0, 0};
 static vector3 VECTOR3_UNIT_Y = {0, 1, 0};
 static vector3 VECTOR3_UNIT_Z = {0, 0, 1};
+static vector4 VECTOR4_ZERO = {0, 0, 0, 0};
 static vector4 VECTOR4_UNIT_X = {1, 0, 0, 0};
 static vector4 VECTOR4_UNIT_Y = {0, 1, 0, 0};
 static vector4 VECTOR4_UNIT_Z = {0, 0, 1, 0};
@@ -263,7 +266,7 @@ static vector2
 vector2_unit(vector2 V)
 {
 	float Length2 = vector2_length2(V);
-	if(float_equal(Length2, 0) || float_equal(Length2, 1))
+	if((Length2 == 0) || (Length2 == 1))
 	{
 		return V;
 	}
@@ -276,7 +279,7 @@ static vector3
 vector3_unit(vector3 V)
 {
 	float Length2 = vector3_length2(V);
-	if(float_equal(Length2, 0) || float_equal(Length2, 1))
+	if((Length2 == 0) || (Length2 == 1))
 	{
 		return V;
 	}
@@ -289,7 +292,7 @@ static vector4
 vector4_unit(vector4 V)
 {
 	float Length2 = vector4_length2(V);
-	if(float_equal(Length2, 0) || float_equal(Length2, 1))
+	if((Length2 == 0) || (Length2 == 1))
 	{
 		return V;
 	}
@@ -302,9 +305,9 @@ static vector2
 vector2_proj(vector2 A, vector2 B)
 {
 	float L2 = vector2_length2(B);
-	if(float_equal(L2, 0))
+	if(L2 == 0)
 	{
-		return {0};
+		return VECTOR2_ZERO;
 	}
 	vector2 Direction = B;
 	float Magnitude = vector2_dot(A, B) / L2;
@@ -315,10 +318,10 @@ vector2_proj(vector2 A, vector2 B)
 static vector3
 vector3_proj(vector3 A, vector3 B)
 {
-	float L2 = vector2_length2(B);
-	if(float_equal(L2, 0))
+	float L2 = vector3_length2(B);
+	if(L2 == 0)
 	{
-		return {0};
+		return VECTOR3_ZERO;
 	}
 	vector3 Direction = B;
 	float Magnitude = vector3_dot(A, B) / L2;
