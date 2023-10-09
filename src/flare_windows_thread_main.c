@@ -19,6 +19,37 @@ setup_raw_input(HWND Window)
 	RegisterRawInputDevices(&Mouse, 1, sizeof(Mouse));
 }
 
+static HMENU
+create_main_menu(void)
+{
+	HMENU File = CreatePopupMenu();
+	AppendMenuW(File, MF_STRING, MENUITEM_FILE_OPEN, L"Open...");
+	HMENU Config = CreatePopupMenu();
+	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_VIDEO, L"Video");
+	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_AUDIO, L"Audio");
+	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_INPUT, L"Input");
+	HMENU Misc = CreatePopupMenu();
+	AppendMenuW(Misc, MF_STRING, MENUITEM_MISC_ABOUT, L"About");
+	HMENU Result = CreateMenu();
+	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)File, L"File");
+	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Config, L"Config");
+	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Misc, L"Misc");
+	return Result;
+}
+
+static HWND
+create_basic_window(void)
+{
+	WNDCLASSEXW WindowClass = {0};
+	WindowClass.cbSize = sizeof(WindowClass);
+	WindowClass.lpfnWndProc = DefWindowProcW;
+	WindowClass.lpszClassName = WNDCLASS_NAME;
+	RegisterClassExW(&WindowClass);
+	HMENU Menu = create_main_menu();
+	HWND Result = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_POPUP, 0, 0, 0, 0, 0, Menu, 0, 0);
+	return Result;
+}
+
 static LRESULT CALLBACK
 window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 {
@@ -65,25 +96,6 @@ window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 	}
 	return Result;
 }
-
-static HMENU
-create_main_menu(void)
-{
-	HMENU File = CreatePopupMenu();
-	AppendMenuW(File, MF_STRING, MENUITEM_FILE_OPEN, L"Open...");
-	HMENU Config = CreatePopupMenu();
-	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_VIDEO, L"Video");
-	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_AUDIO, L"Audio");
-	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_INPUT, L"Input");
-	HMENU Misc = CreatePopupMenu();
-	AppendMenuW(Misc, MF_STRING, MENUITEM_MISC_ABOUT, L"About");
-	HMENU Result = CreateMenu();
-	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)File, L"File");
-	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Config, L"Config");
-	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Misc, L"Misc");
-	return Result;
-}
-
 
 static GLuint
 CreateOpenGLShader(char* Source, GLenum Type)
@@ -149,23 +161,23 @@ float PLANE_2D_VERTS[] =
 
 void WinMainCRTStartup(void)
 {
-	HWND Window = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
-	if(Window)
+	HWND Existing = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
+	if(Existing)
 	{
 		WCHAR* Message = L"Flare is already running. Launch another instance?";
 		UINT MessageType = MB_YESNO | MB_ICONINFORMATION;
-		int Response = MessageBoxW(Window, Message, WINDOW_TITLE, MessageType);
+		int Response = MessageBoxW(Existing, Message, WINDOW_TITLE, MessageType);
 		if(Response == IDNO)
 		{
-			goto label_program_exit;
+			ExitProcess(0);
 		}
 	}
 
-	SYSTEM_DLL_KERNEL32 = load_system_dll("kernel32.dll");
-	SYSTEM_DLL_USER32 = load_system_dll("user32.dll");
 	PROGRAM_HINSTANCE = GetModuleHandleA(0);
-	bool_t A = system_is_64bit();
-	enable_process_dpi_awareness();
+	SYSTEM_DLL_USER32 = GetModuleHandleA("user32.dll");
+	SYSTEM_DLL_KERNEL32 = GetModuleHandleA("kernel32.dll");
+	//SYSTEM_IS_64BITS = system_is_64bit();
+	QueryPerformanceFrequency(&PROCESSOR_FREQUENCY);
 
 	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
 	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
@@ -175,21 +187,18 @@ void WinMainCRTStartup(void)
 	//HANDLE LogFile = CreateFileA(FILENAME_LOG, GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, FILENAME_INI);
 
-	WNDCLASSEXW WindowClass = {0};
-	WindowClass.cbSize = sizeof(WindowClass);
-	WindowClass.lpfnWndProc = window_proc;
-	WindowClass.lpszClassName = WNDCLASS_NAME;
-	RegisterClassExW(&WindowClass);
-	HMENU MainMenu = create_main_menu();
-	Window = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_POPUP, 0, 0, 0, 0, 0, MainMenu, 0, 0);
+	enable_process_dpi_awareness();
+
+	HWND Window = create_basic_window();
 	setup_raw_input(Window);
-
-	//CreateThread(0, 0, thread_renderer, Window, 0, &THREAD_ID_RENDERER);
-
 	HDC WindowDC = GetDC(Window);
 	HGLRC ContextGL = create_opengl_context(WindowDC);
 	Assert(glewInit() == GLEW_OK);
+
+	SetWindowLongPtrW(Window, GWLP_WNDPROC, (LONG_PTR)window_proc);
+	SetWindowPos(Window, 0, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	ShowWindow(Window, SW_MAXIMIZE);
+
 	GLuint VertexShader = CreateOpenGLShader("../shaders/shader_vs.glsl", GL_VERTEX_SHADER);
 	GLuint FragmentShader = CreateOpenGLShader("../shaders/shader_fs.glsl", GL_FRAGMENT_SHADER);
 	GLuint ShaderProgram = CreateOpenGLProgram(VertexShader, FragmentShader);
@@ -224,10 +233,11 @@ void WinMainCRTStartup(void)
 	matrix4 Perspective = matrix4_perspective((float)M_PI/4, (float)WindowHeight/WindowWidth, 0.1f, 100);
 	glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, "Perspective"), 1, GL_FALSE, (float*)(&Perspective));
 
-	LARGE_INTEGER Frequency = {0};
-	LARGE_INTEGER T1 = {0};
-	LARGE_INTEGER T2 = {0};
-	QueryPerformanceFrequency(&Frequency);
+	LARGE_INTEGER T1, T2;
+	QueryPerformanceFrequency(&T1);
+
+	//HANDLE Threads[1];
+	//Threads[0] = CreateThread(0, 0, thread_renderer, Window, 0, &THREAD_ID_RENDERER);
 
 	MSG Message;
 	for(;;)
@@ -242,7 +252,7 @@ void WinMainCRTStartup(void)
 			DispatchMessageW(&Message);
 		}
 		QueryPerformanceCounter(&T2);
-		float DeltaTime = (float)(T2.QuadPart - T1.QuadPart)/Frequency.QuadPart;
+		float DeltaTime = (float)(T2.QuadPart - T1.QuadPart)/PROCESSOR_FREQUENCY.QuadPart;
 		T1 = T2;
 
 		float MoveStep = CameraSpeed * DeltaTime;
@@ -278,8 +288,7 @@ void WinMainCRTStartup(void)
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		GLenum Error = glGetError();
-		Assert(SwapBuffers(WindowDC));
+		SwapBuffers(WindowDC);
 	}
 	WritePrivateProfileStringW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, L"1", FILENAME_INI);
 	WritePrivateProfileStringW(INI_SECTION_GRAPHICS, INI_KEY_GRAPHICS_API, L"1", FILENAME_INI);
