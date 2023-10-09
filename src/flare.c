@@ -2,7 +2,7 @@
 	#define NOMINMAX
 	#define WIN32_LEAN_AND_MEAN
 	#include<windows.h>
-	#include<shlwapi.h>
+	#include<pathcch.h>
 	#include"flare_windows.h"
 #else
 	#error unspecified or unsupported operating system.

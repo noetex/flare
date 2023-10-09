@@ -182,8 +182,8 @@ void WinMainCRTStartup(void)
 	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
 	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
 	memcpy(FILENAME_LOG, FILENAME_EXE, sizeof(FILENAME_LOG));
-	PathRenameExtensionW(FILENAME_INI, L".ini");
-	PathRenameExtensionW(FILENAME_LOG, L".log");
+	PathCchRenameExtension(FILENAME_INI, sizeof(FILENAME_INI), L".ini");
+	PathCchRenameExtension(FILENAME_LOG, sizeof(FILENAME_LOG), L".log");
 	//HANDLE LogFile = CreateFileA(FILENAME_LOG, GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, FILENAME_INI);
 
