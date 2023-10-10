@@ -158,8 +158,12 @@ float PLANE_2D_VERTS[] =
 	-1, 0, -1,
 };
 
-
+#if 0
 void WinMainCRTStartup(void)
+#else
+int WINAPI
+wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
+#endif
 {
 	HWND Existing = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
 	if(Existing)
