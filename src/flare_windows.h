@@ -1,3 +1,10 @@
+#pragma comment(lib, "kernel32.lib")
+#pragma comment(lib, "user32.lib")
+#pragma comment(lib, "pathcch.lib")
+#pragma comment(lib, "gdi32.lib")
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "3rd_party/glew-2.2.0/lib/Release/x64/glew32s.lib")
+
 enum window_menu_items
 {
 	MENUITEM_FILE_OPEN = 0x8000,
