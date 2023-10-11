@@ -19,24 +19,6 @@ setup_raw_input(HWND Window)
 	RegisterRawInputDevices(&Mouse, 1, sizeof(Mouse));
 }
 
-static HMENU
-create_main_menu(void)
-{
-	HMENU File = CreatePopupMenu();
-	AppendMenuW(File, MF_STRING, MENUITEM_FILE_OPEN, L"Open...");
-	HMENU Config = CreatePopupMenu();
-	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_VIDEO, L"Video");
-	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_AUDIO, L"Audio");
-	AppendMenuW(Config, MF_STRING, MENUITEM_CONFIG_INPUT, L"Input");
-	HMENU Misc = CreatePopupMenu();
-	AppendMenuW(Misc, MF_STRING, MENUITEM_MISC_ABOUT, L"About");
-	HMENU Result = CreateMenu();
-	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)File, L"File");
-	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Config, L"Config");
-	AppendMenuW(Result, MF_STRING | MF_POPUP, (UINT_PTR)Misc, L"Misc");
-	return Result;
-}
-
 static HWND
 create_basic_window(void)
 {
@@ -47,7 +29,7 @@ create_basic_window(void)
 	WindowClass.hIcon = LoadIconA(PROGRAM_HINSTANCE, MAKEINTRESOURCEA(RESOURCE_EXE_ICON));
 	WindowClass.hIconSm = LoadIconA(PROGRAM_HINSTANCE, MAKEINTRESOURCEA(RESOURCE_EXE_ICON));
 	RegisterClassExW(&WindowClass);
-	HMENU Menu = create_main_menu();
+	HMENU Menu = LoadMenuA(PROGRAM_HINSTANCE, MAKEINTRESOURCEA(RESOURCE_MAINMENU));
 	HWND Result = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_POPUP, 0, 0, 0, 0, 0, Menu, 0, 0);
 	return Result;
 }
@@ -60,7 +42,7 @@ window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_SETCURSOR:
 		{
-			bool_t HideMouse = true;
+			bool_t HideMouse = false;
 			if(HideMouse)
 			{
 				if(LOWORD(lParam) == HTCLIENT)
@@ -198,7 +180,7 @@ wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
 	enable_process_dpi_awareness();
 
 	HWND Window = create_basic_window();
-	setup_raw_input(Window);
+	//setup_raw_input(Window);
 	HDC WindowDC = GetDC(Window);
 	HGLRC ContextGL = create_opengl_context(WindowDC);
 	Assert(glewInit() == GLEW_OK);

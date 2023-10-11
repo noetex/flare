@@ -1,3 +1,21 @@
 #include"flare_windows_resource.h"
 
 RESOURCE_EXE_ICON ICON "../resources/logo_128x128.ico"
+
+RESOURCE_MAINMENU MENU
+{
+	POPUP "&File"
+	{
+		MENUITEM "Open...", MENUITEM_FILE_OPEN
+	}
+	POPUP "&Config"
+	{
+		MENUITEM "Video", MENUITEM_CONFIG_VIDEO
+		MENUITEM "Audio", MENUITEM_CONFIG_AUDIO
+		MENUITEM "Input", MENUITEM_CONFIG_INPUT
+	}
+	POPUP "&Misc"
+	{
+		MENUITEM "About", MENUITEM_MISC_ABOUT
+	}
+}

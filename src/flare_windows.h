@@ -5,15 +5,6 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "3rd_party/glew-2.2.0/lib/Release/x64/glew32s.lib")
 
-enum window_menu_items
-{
-	MENUITEM_FILE_OPEN = 0x8000,
-	MENUITEM_CONFIG_VIDEO,
-	MENUITEM_CONFIG_AUDIO,
-	MENUITEM_CONFIG_INPUT,
-	MENUITEM_MISC_ABOUT,
-};
-
 enum
 {
 	WM_FLARE_CUSTOM_MESSAGE_1 = WM_APP,
