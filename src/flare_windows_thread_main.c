@@ -132,6 +132,8 @@ CreateOpenGLProgram(GLuint VertexShader, GLuint FragmentShader)
 	glAttachShader(Result, VertexShader);
 	glAttachShader(Result, FragmentShader);
 	glLinkProgram(Result);
+	glDetachShader(Result, VertexShader);
+	glDetachShader(Result, FragmentShader);
 	glDeleteShader(VertexShader);
 	glDeleteShader(FragmentShader);
 	GLint IsLinked = 0;
