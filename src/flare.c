@@ -4,6 +4,7 @@
 	#include<windows.h>
 	#include<pathcch.h>
 	#include"flare_windows.h"
+	#include"flare_windows_resource.h"
 #else
 	#error unspecified or unsupported operating system.
 #endif

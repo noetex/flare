@@ -44,6 +44,8 @@ create_basic_window(void)
 	WindowClass.cbSize = sizeof(WindowClass);
 	WindowClass.lpfnWndProc = DefWindowProcW;
 	WindowClass.lpszClassName = WNDCLASS_NAME;
+	WindowClass.hIcon = LoadIconA(PROGRAM_HINSTANCE, MAKEINTRESOURCEA(RESOURCE_EXE_ICON));
+	WindowClass.hIconSm = LoadIconA(PROGRAM_HINSTANCE, MAKEINTRESOURCEA(RESOURCE_EXE_ICON));
 	RegisterClassExW(&WindowClass);
 	HMENU Menu = create_main_menu();
 	HWND Result = CreateWindowExW(0, WNDCLASS_NAME, WINDOW_TITLE, WS_POPUP, 0, 0, 0, 0, 0, Menu, 0, 0);
