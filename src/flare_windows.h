@@ -3,7 +3,6 @@
 #pragma comment(lib, "pathcch.lib")
 #pragma comment(lib, "gdi32.lib")
 #pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "3rd_party/glew-2.2.0/lib/Release/x64/glew32s.lib")
 
 enum
 {

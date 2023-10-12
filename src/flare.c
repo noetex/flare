@@ -9,19 +9,20 @@
 	#error unspecified or unsupported operating system.
 #endif
 
-#define GLEW_STATIC
-#include"../3rd_party/glew-2.2.0/include/GL/glew.h"
-
 #define _USE_MATH_DEFINES
 #include<math.h>
 #include<string.h>
+#include<stdint.h>
 
 #include"flare.h"
+#include"flare_opengl.h"
+#include"flare_opengl_core.h"
 #include"flare_math_vector.h"
 #include"flare_math_matrix.h"
 #include"flare_camera.h"
 
 #include"flare_misc.c"
+#include"flare_opengl_core.c"
 
 #ifdef FLARE_SYSTEM_WINDOWS
 	#include"flare_windows.c"

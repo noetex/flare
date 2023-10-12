@@ -150,8 +150,7 @@ the_real_action(HWND Window)
 	setup_raw_input(Window);
 	HDC WindowDC = GetDC(Window);
 	HGLRC ContextGL = create_opengl_context(WindowDC);
-	Assert(glewInit() == GLEW_OK);
-
+	opengl_load_core();
 	SetWindowLongPtrW(Window, GWLP_WNDPROC, (LONG_PTR)window_proc);
 	SetWindowPos(Window, 0, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	ShowWindow(Window, SW_MAXIMIZE);

@@ -84,8 +84,20 @@ create_opengl_context(HDC WindowDC)
 	Descriptor.cDepthBits = 32;
 	int PixelFormat = ChoosePixelFormat(WindowDC, &Descriptor);
 	SetPixelFormat(WindowDC, PixelFormat, &Descriptor);
-	//DescribePixelFormat(WindowDC, PixelFormat, sizeof(Descriptor), &Descriptor);
 	HGLRC Result = wglCreateContext(WindowDC);
 	wglMakeCurrent(WindowDC, Result);
+	return Result;
+}
+
+static void*
+query_opengl_function(char* Name)
+{
+	intptr_t Address = (intptr_t)wglGetProcAddress(Name);
+	if((Address >= -1) && (Address <= 3))
+	{
+		Address = (intptr_t)GetProcAddress(SYSTEM_DLL_OPENGL32, Name);
+		//Assert(Address);
+	}
+	void* Result = (void*)Address;
 	return Result;
 }
