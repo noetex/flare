@@ -144,43 +144,10 @@ float PLANE_2D_VERTS[] =
 	-1, 0, -1,
 };
 
-#if 0
-void WinMainCRTStartup(void)
-#else
-int WINAPI
-wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
-#endif
+static void
+the_real_action(HWND Window)
 {
-	HWND Existing = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
-	if(Existing)
-	{
-		WCHAR* Message = L"Flare is already running. Launch another instance?";
-		UINT MessageType = MB_YESNO | MB_ICONINFORMATION;
-		int Response = MessageBoxW(Existing, Message, WINDOW_TITLE, MessageType);
-		if(Response == IDNO)
-		{
-			ExitProcess(0);
-		}
-	}
-
-	PROGRAM_HINSTANCE = GetModuleHandleA(0);
-	SYSTEM_DLL_USER32 = GetModuleHandleA("user32.dll");
-	SYSTEM_DLL_KERNEL32 = GetModuleHandleA("kernel32.dll");
-	//SYSTEM_IS_64BITS = system_is_64bit();
-	QueryPerformanceFrequency(&PROCESSOR_FREQUENCY);
-
-	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
-	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
-	memcpy(FILENAME_LOG, FILENAME_EXE, sizeof(FILENAME_LOG));
-	PathCchRenameExtension(FILENAME_INI, sizeof(FILENAME_INI), L".ini");
-	PathCchRenameExtension(FILENAME_LOG, sizeof(FILENAME_LOG), L".log");
-	//HANDLE LogFile = CreateFileA(FILENAME_LOG, GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
-	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, FILENAME_INI);
-
-	enable_process_dpi_awareness();
-
-	HWND Window = create_basic_window();
-	//setup_raw_input(Window);
+	setup_raw_input(Window);
 	HDC WindowDC = GetDC(Window);
 	HGLRC ContextGL = create_opengl_context(WindowDC);
 	Assert(glewInit() == GLEW_OK);
@@ -236,7 +203,7 @@ wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
 		{
 			if(Message.message == WM_QUIT)
 			{
-				goto label_program_exit;
+				return;
 			}
 			TranslateMessage(&Message);
 			DispatchMessageW(&Message);
@@ -280,8 +247,48 @@ wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		SwapBuffers(WindowDC);
 	}
+}
+
+
+#if 0
+void WinMainCRTStartup(void)
+#else
+int WINAPI
+wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
+#endif
+{
+	HWND Existing = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
+	if(Existing)
+	{
+		WCHAR* Message = L"Flare is already running. Launch another instance?";
+		UINT MessageType = MB_YESNO | MB_ICONINFORMATION;
+		int Response = MessageBoxW(Existing, Message, WINDOW_TITLE, MessageType);
+		if(Response == IDNO)
+		{
+			ExitProcess(0);
+		}
+	}
+
+	PROGRAM_HINSTANCE = GetModuleHandleA(0);
+	SYSTEM_DLL_USER32 = GetModuleHandleA("user32.dll");
+	SYSTEM_DLL_KERNEL32 = GetModuleHandleA("kernel32.dll");
+	SYSTEM_DLL_OPENGL32 = GetModuleHandleA("opengl32.dll");
+	//SYSTEM_IS_64BITS = system_is_64bit();
+	QueryPerformanceFrequency(&PROCESSOR_FREQUENCY);
+
+	GetModuleFileNameW(PROGRAM_HINSTANCE, FILENAME_EXE, ARRAYSIZE(FILENAME_EXE));
+	memcpy(FILENAME_INI, FILENAME_EXE, sizeof(FILENAME_INI));
+	memcpy(FILENAME_LOG, FILENAME_EXE, sizeof(FILENAME_LOG));
+	PathCchRenameExtension(FILENAME_INI, sizeof(FILENAME_INI), L".ini");
+	PathCchRenameExtension(FILENAME_LOG, sizeof(FILENAME_LOG), L".log");
+	//HANDLE LogFile = CreateFileA(FILENAME_LOG, GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
+	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, FILENAME_INI);
+
+	enable_process_dpi_awareness();
+
+	HWND Window = create_basic_window();
+	the_real_action(Window);
 	WritePrivateProfileStringW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, L"1", FILENAME_INI);
 	WritePrivateProfileStringW(INI_SECTION_GRAPHICS, INI_KEY_GRAPHICS_API, L"1", FILENAME_INI);
-label_program_exit:
 	ExitProcess(0);
 }
