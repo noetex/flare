@@ -155,6 +155,11 @@ the_real_action(HWND Window)
 	SetWindowPos(Window, 0, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	ShowWindow(Window, SW_MAXIMIZE);
 
+	RECT WindowRect;
+	GetClientRect(Window, &WindowRect);
+	LONG WindowWidth = WindowRect.right - WindowRect.left;
+	LONG WindowHeight = WindowRect.bottom - WindowRect.top;
+
 	GLuint VertexShader = CreateOpenGLShader("../shaders/shader_vs.glsl", GL_VERTEX_SHADER);
 	GLuint FragmentShader = CreateOpenGLShader("../shaders/shader_fs.glsl", GL_FRAGMENT_SHADER);
 	GLuint ShaderProgram = CreateOpenGLProgram(VertexShader, FragmentShader);
@@ -165,18 +170,14 @@ the_real_action(HWND Window)
 	glGenVertexArrays(1, &VertexArray);
 	glGenBuffers(1, &VertexBuffer);
 
-	RECT WindowRect;
-	GetClientRect(Window, &WindowRect);
-	LONG WindowWidth = WindowRect.right - WindowRect.left;
-	LONG WindowHeight = WindowRect.bottom - WindowRect.top;
-	glViewport(0, 0, WindowWidth, WindowHeight);
-
 	glBindVertexArray(VertexArray);
 	glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(PLANE_2D_VERTS), PLANE_2D_VERTS, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 	glEnableVertexAttribArray(0);
+
 	glClearColor(0.4f, 0.2f, 0.8f, 1.0f);
+	glViewport(0, 0, WindowWidth, WindowHeight);
 
 	camera Camera = {0};
 	Camera.Position = (vector3){0, 1, 0};
