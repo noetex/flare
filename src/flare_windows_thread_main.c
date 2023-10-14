@@ -257,6 +257,8 @@ int WINAPI
 wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
 #endif
 {
+	SYSTEM_DLL_USER32 = GetModuleHandleA("user32.dll");
+	enable_process_dpi_awareness();
 	HWND Existing = FindWindowW(WNDCLASS_NAME, WINDOW_TITLE);
 	if(Existing)
 	{
@@ -270,7 +272,6 @@ wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
 	}
 
 	PROGRAM_HINSTANCE = GetModuleHandleA(0);
-	SYSTEM_DLL_USER32 = GetModuleHandleA("user32.dll");
 	SYSTEM_DLL_KERNEL32 = GetModuleHandleA("kernel32.dll");
 	SYSTEM_DLL_OPENGL32 = GetModuleHandleA("opengl32.dll");
 	//SYSTEM_IS_64BITS = system_is_64bit();
@@ -284,7 +285,6 @@ wWinMain(HINSTANCE Instance, HINSTANCE Unused, WCHAR* CmdLine, int CmdShow)
 	//HANDLE LogFile = CreateFileA(FILENAME_LOG, GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 	UINT SafeExit = GetPrivateProfileIntW(INI_SECTION_GENERAL, INI_KEY_GENERAL_SAFEEXIT, 0, FILENAME_INI);
 
-	enable_process_dpi_awareness();
 
 	HWND Window = create_basic_window();
 	the_real_action(Window);
